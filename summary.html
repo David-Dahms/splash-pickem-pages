@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pick'em Summary</title>
+<style>
+
+:root {
+  color-scheme: light dark;
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --surface-2: #f9fafb;
+  --border: #e2e4e9;
+  --text: #14161a;
+  --text-dim: #5b6270;
+  --accent: #2f6fed;
+  --accent-soft: #e8f0fe;
+  --good: #16794f;
+  --good-bg: #e5f6ee;
+  --bad: #b3261e;
+  --bad-bg: #fbe9e8;
+  --warn: #9a6700;
+  --warn-bg: #fff4dc;
+  --high: #2f6fed;
+  --high-bg: #e8f0fe;
+  --mid: #6b5fd4;
+  --mid-bg: #efedfc;
+  --low: #5b6270;
+  --low-bg: #eceef1;
+  --shadow: 0 1px 2px rgba(20, 22, 26, 0.06), 0 4px 16px rgba(20, 22, 26, 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101215;
+    --surface: #191c20;
+    --surface-2: #1f2226;
+    --border: #2c3036;
+    --text: #eceef1;
+    --text-dim: #9aa1ac;
+    --accent: #6c9bff;
+    --accent-soft: #1c2a4a;
+    --good: #4fd196;
+    --good-bg: #103322;
+    --bad: #ff7a70;
+    --bad-bg: #3a1917;
+    --warn: #e3b341;
+    --warn-bg: #3a2d0d;
+    --high: #6c9bff;
+    --high-bg: #1c2a4a;
+    --mid: #b0a4ff;
+    --mid-bg: #29234d;
+    --low: #9aa1ac;
+    --low-bg: #24272c;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  padding: 24px 16px 64px;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+header.top {
+  margin-bottom: 24px;
+}
+
+header.top h1 {
+  margin: 0 0 4px;
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+}
+
+header.top .sub {
+  color: var(--text-dim);
+  font-size: 0.92rem;
+}
+
+nav.site-links {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+nav.site-links a {
+  font-size: 0.82rem;
+  text-decoration: none;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+nav.site-links a.active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.stat-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: var(--shadow);
+}
+
+.stat-tile .label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.stat-tile .value {
+  font-size: 1.25rem;
+  font-weight: 650;
+}
+
+.banner {
+  background: var(--warn-bg);
+  color: var(--warn);
+  border: 1px solid var(--warn);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 650;
+  padding: 3px 9px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.badge.high { color: var(--high); background: var(--high-bg); }
+.badge.mid { color: var(--mid); background: var(--mid-bg); }
+.badge.low { color: var(--low); background: var(--low-bg); }
+.badge.good { color: var(--good); background: var(--good-bg); }
+.badge.bad { color: var(--bad); background: var(--bad-bg); }
+
+footer.note {
+  margin-top: 32px;
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+
+.stat-row {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.game-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--low);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+.game-card.tier-high { border-left-color: var(--high); }
+.game-card.tier-mid { border-left-color: var(--mid); }
+.game-card.tier-low { border-left-color: var(--low); }
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.matchup {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.matchup-full {
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  margin-bottom: 12px;
+}
+
+.pick-line {
+  background: var(--surface-2);
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.pick-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+}
+
+.pick-value {
+  font-weight: 700;
+  font-size: 1.02rem;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 12px;
+}
+
+.m-label {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.m-value {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.card-warning {
+  margin-top: 12px;
+  font-size: 0.76rem;
+  color: var(--warn);
+  background: var(--warn-bg);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+</style>
+</head>
+<body>
+  <div class="page">
+    <header class="top">
+      <h1>Pick&rsquo;em Summary</h1>
+      <div class="sub">High-level view: pick, model confidence, and the market line behind it.</div>
+    </header>
+
+    <nav class="site-links">
+      <a class="active" href="summary.html">Summary</a>
+      <a href="detail.html">Historical &amp; Reasoning</a>
+    </nav>
+
+    
+
+    <div class="stat-row">
+      
+    <div class="stat-tile">
+      <div class="label">League / Mode</div>
+      <div class="value">NFL · ats</div>
+    </div>
+    <div class="stat-tile">
+      <div class="label">Slate date</div>
+      <div class="value">2026-09-13</div>
+    </div>
+    <div class="stat-tile">
+      <div class="label">Games</div>
+      <div class="value">13</div>
+    </div>
+    <div class="stat-tile">
+      <div class="label">Odds API</div>
+      <div class="value">Enabled</div>
+    </div>
+    
+        <div class="stat-tile">
+          <div class="label">ATS coverage</div>
+          <div class="value">13 / 13</div>
+        </div>
+        
+        <div class="stat-tile">
+          <div class="label">API credits left</div>
+          <div class="value">490</div>
+        </div>
+        <div class="stat-tile">
+          <div class="label">Last call cost</div>
+          <div class="value">2</div>
+        </div>
+        
+    </div>
+
+    <div class="game-grid">
+      
+    <article class="game-card tier-high">
+      <div class="card-top">
+        <span class="badge high">#1 · 13 pts</span>
+        <span class="badge good">ATS cover %</span>
+      </div>
+      <h3 class="matchup">BAL @ IND</h3>
+      <div class="matchup-full">Baltimore Ravens at Indianapolis Colts</div>
+      <div class="pick-line">
+        <span class="pick-label">Pick</span>
+        <span class="pick-value">Indianapolis Colts +3.4</span>
+      </div>
+      <div class="metric-grid">
+        <div>
+          <div class="m-label">ATS cover %</div>
+          <div class="m-value">71.5%</div>
+        </div>
+        <div>
+          <div class="m-label">Market spread</div>
+          <div class="m-value">BAL -3.4 / IND +3.4</div>
+        </div>
+        <div>
+          <div class="m-label">Books (spread)</div>
+          <div class="m-value">9</div>
+        </div>
+        <div>
+          <div class="m-label">Books (moneyline)</div>
+          <div class="m-value">9</div>
+        </div>
+      </div>
+      
+    </article>
+    
+
+    <article class="game-card tier-high">
+      <div class="card-top">
+        <span class="badge high">#2 · 12 pts</span>
+        <span class="badge good">ATS cover %</span>
+      </div>
+      <h3 class="matchup">DAL @ NYG</h3>
+      <div class="matchup-full">Dallas Cowboys at New York Giants</div>
+      <div class="pick-line">
+        <span class="pick-label">Pick</span>
+        <span class="pick-value">New York Giants +4.5</span>
+      </div>
+      <div class="metric-grid">
+        <div>
+          <div class="m-label">ATS cover %</div>
+          <div class="m-value">71.1%</div>
+        </div>
+        <div>
+          <div class="m-label">Market spread</div>
+          <div class="m-value">DAL -4.5 / NYG +4.5</div>
+        </div>
+        <div>
+          <div class="m-label">Books (spread)</div>
+          <div class="m-value">1</div>
+        </div>
+        <div>
+          <div class="m-label">Books (moneyline)</div>
+          <div class="m-value">1</div>
+        </div>
+      </div>
+      
+    </article>
+    
+
+    <article class="game-card tier-high">
+      <div class="card-top">
+        <span class="badge high">#3 · 11 pts</span>
+        <span class="badge good">ATS cover %</span>
+      </div>
+      <h3 class="matchup">GB @ MIN</h3>
+      <div class="matchup-full">Green Bay Packers at Minnesota Vikings</div>
+      <div class="pick-line">
+        <span class="pick-label">Pick</span>
+        <span class="pick-value">Minnesota Vikings +4.5</span>
+      </div>
+      <div class="metric-grid">
+        <div>
+          <div class="m-label">ATS cover %</div>
+          <div class="m-value">70.9%</div>
+        </div>
+        <div>
+          <div class="m-label">Market spread</div>
+          <div class="m-value">GB -4.5 / MIN +4.5</div>
+        </div>
+        <div>
+          <div class="m-label">Books (spread)</div>
+          <div class="m-value">2</div>
+        </div>
+        <div>
+          <div class="m-label">Books (moneyline)</div>
+          <div class="m-value">2</div>
+        </div>
+      </div>
+      
+    </article>
+    
+
+    <article class="game-card tier-high">
+      <div class="card-top">
+        <span class="badge high">#4 · 10 pts</span>
+        <span class="badge good">ATS cover %</span>
+      </div>
+      <h3 class="matchup">WSH @ PHI</h3>
+      <div class="matchup-full">Washington Commanders at Philadelphia Eagles</div>
+      <div class="pick-line">
+        <span class="pick-label">Pick</span>
+        <span class="pick-value">Philadelphia Eagles -2.0</span>
+      </div>
+      <div class="metric-grid">
+        <div>
+          <div class="m-label">ATS cover %</div>
+          <div class="m-value">64.6%</div>
+        </div>
+        <div>
+          <div class="m-label">Market spread</div>
+          <div class="m-value">PHI -2.0 / WSH +2.0</div>
+        </div>
+        <div>
+          <div class="m-label">Books (spread)</div>
+          <div class="m-value">2</div>
+        </div>
+        <div>
+          <div class="m-label">Books (moneyline)</div>
+          <div class="m-value">2</div>
+        </div>
+      </div>
+      
+    </article>
+    
+
+    <article class="game-card tier-mid">
+      <div class="card-top">
+        <span class="badge mid">#5 · 9 pts</span>
+        <span class="badge good">ATS cover %</span>
+      </div>
+      <h3 class="matchup">ARI @ LAC</h3>
+      <div class="matchup-full">Arizona Cardinals at Los Angeles Chargers</div>
+      <div class="pick-line">
+        <span class="pick-label">Pick</span>
+        <span class="pick-value">Arizona Cardinals +9.4</span>
+      </div>
+      <div class="metric-grid">
+        <div>
+          <div class="m-label">ATS cover %</div>
+          <div class="m-value">63.4%</div>
+        </div>
+        <div>
+          <div class="m-label">Market spread</div>
+          <div class="m-value">LAC -9.4 / ARI +9.4</div>
+        </div>
+        <div>
+          <div class="m-label">Books (spread)</div>
+          <div class="m-value">9</div>
+        </div>
+        <div>
+          <div class="m-label">Books (moneyline)</div>
+          <div class="m-value">9</div>
+        </div>
+      </div>
+      
+    </article>
+    
+
+    <article class="game-card tier-mid">
+      <div class="card-top">
+        <span class="badge mid">#6 · 8 pts</span>
+        <span class="badge good">ATS cover %</span>
+      </div>
+      <h3 class="matchup">BUF @ HOU</h3>
+      <div class="matchup-full">Buffalo Bills at Houston Texans</div>
+      <div class="pick-line">
+        <span class="pick-label">Pick</span>
+        <span class="pick-value">Houston Texans +1.0</span>
+      </div>
+      <div class="metric-grid">
+        <div>
+          <div class="m-label">ATS cover %</div>
+          <div class="m-value">63.2%</div>
+        </div>
+        <div>
+          <div class="m-label">Market spread</div>
+          <div class="m-value">BUF -1.0 / HOU +1.0</div>
+        </div>
+        <div>
+          <div class="m-label">Books (spread)</div>
+          <div class="m-value">9</div>
+        </div>
+        <div>
+          <div class="m-label">Books (moneyline)</div>
+          <div class="m-value">9</div>
+        </div>
+      </div>
+      
+    </article>
+    
+
+    <article class="game-card tier-mid">
+      <div class="card-top">
+        <span class="badge mid">#7 · 7 pts</span>
+        <span class="badge good">ATS cover %</span>
+      </div>
+      <h3 class="matchup">MIA @ LV</h3>
+      <div class="matchup-full">Miami Dolphins at Las Vegas Raiders</div>
+      <div class="pick-line">
+        <span class="pick-label">Pick</span>
+        <span class="pick-value">Miami Dolphins +3.1</span>
+      </div>
+      <div class="metric-grid">
+        <div>
+          <div class="m-label">ATS cover %</div>
+          <div class="m-value">62.2%</div>
+        </div>
+        <div>
+          <div class="m-label">Market spread</div>
+          <div class="m-value">LV -3.1 / MIA +3.1</div>
+        </div>
+        <div>
+          <div class="m-label">Books (spread)</div>
+          <div class="m-value">9</div>
+        </div>
+        <div>
+          <div class="m-label">Books (moneyline)</div>
+          <div class="m-value">9</div>
+        </div>
+      </div>
+      
+    </article>
+    
+
+    <article class="game-card tier-mid">
+      <div class="card-top">
+        <span class="badge mid">#8 · 6 pts</span>
+        <span class="badge good">ATS cover %</span>
+      </div>
+      <h3 class="matchup">CHI @ CAR</h3>
+      <div class="matchup-full">Chicago Bears at Carolina Panthers</div>
+      <div class="pick-line">
+        <span class="pick-label">Pick</span>
+        <span class="pick-value">Carolina Panthers +3.0</span>
+      </div>
+      <div class="metric-grid">
+        <div>
+          <div class="m-label">ATS cover %</div>
+          <div class="m-value">61.0%</div>
+        </div>
+        <div>
+          <div class="m-label">Market spread</div>
+          <div class="m-value">CHI -3.0 / CAR +3.0</div>
+        </div>
+        <div>
+          <div class="m-label">Books (spread)</div>
+          <div class="m-value">9</div>
+        </div>
+        <div>
+          <div class="m-label">Books (moneyline)</div>
+          <div class="m-value">9</div>
+        </div>
+      </div>
+      
+    </article>
+    
+
+    <article class="game-card tier-low">
+      <div class="card-top">
+        <span class="badge low">#9 · 5 pts</span>
+        <span class="badge good">ATS cover %</span>
+      </div>
+      <h3 class="matchup">TB @ CIN</h3>
+      <div class="matchup-full">Tampa Bay Buccaneers at Cincinnati Bengals</div>
+      <div class="pick-line">
+        <span class="pick-label">Pick</span>
+        <span class="pick-value">Tampa Bay Buccaneers +3.8</span>
+      </div>
+      <div class="metric-grid">
+        <div>
+          <div class="m-label">ATS cover %</div>
+          <div class="m-value">59.4%</div>
+        </div>
+        <div>
+          <div class="m-label">Market spread</div>
+          <div class="m-value">CIN -3.8 / TB +3.8</div>
+        </div>
+        <div>
+          <div class="m-label">Books (spread)</div>
+          <div class="m-value">9</div>
+        </div>
+        <div>
+          <div class="m-label">Books (moneyline)</div>
+          <div class="m-value">9</div>
+        </div>
+      </div>
+      
+    </article>
+    
+
+    <article class="game-card tier-low">
+      <div class="card-top">
+        <span class="badge low">#10 · 4 pts</span>
+        <span class="badge good">ATS cover %</span>
+      </div>
+      <h3 class="matchup">NYJ @ TEN</h3>
+      <div class="matchup-full">New York Jets at Tennessee Titans</div>
+      <div class="pick-line">
+        <span class="pick-label">Pick</span>
+        <span class="pick-value">Tennessee Titans -0.9</span>
+      </div>
+      <div class="metric-grid">
+        <div>
+          <div class="m-label">ATS cover %</div>
+          <div class="m-value">57.7%</div>
+        </div>
+        <div>
+          <div class="m-label">Market spread</div>
+          <div class="m-value">TEN -0.9 / NYJ +0.9</div>
+        </div>
+        <div>
+          <div class="m-label">Books (spread)</div>
+          <div class="m-value">9</div>
+        </div>
+        <div>
+          <div class="m-label">Books (moneyline)</div>
+          <div class="m-value">9</div>
+        </div>
+      </div>
+      
+    </article>
+    
+
+    <article class="game-card tier-low">
+      <div class="card-top">
+        <span class="badge low">#11 · 3 pts</span>
+        <span class="badge good">ATS cover %</span>
+      </div>
+      <h3 class="matchup">NO @ DET</h3>
+      <div class="matchup-full">New Orleans Saints at Detroit Lions</div>
+      <div class="pick-line">
+        <span class="pick-label">Pick</span>
+        <span class="pick-value">New Orleans Saints +6.9</span>
+      </div>
+      <div class="metric-grid">
+        <div>
+          <div class="m-label">ATS cover %</div>
+          <div class="m-value">56.2%</div>
+        </div>
+        <div>
+          <div class="m-label">Market spread</div>
+          <div class="m-value">DET -6.9 / NO +6.9</div>
+        </div>
+        <div>
+          <div class="m-label">Books (spread)</div>
+          <div class="m-value">9</div>
+        </div>
+        <div>
+          <div class="m-label">Books (moneyline)</div>
+          <div class="m-value">9</div>
+        </div>
+      </div>
+      
+    </article>
+    
+
+    <article class="game-card tier-low">
+      <div class="card-top">
+        <span class="badge low">#12 · 2 pts</span>
+        <span class="badge good">ATS cover %</span>
+      </div>
+      <h3 class="matchup">CLE @ JAX</h3>
+      <div class="matchup-full">Cleveland Browns at Jacksonville Jaguars</div>
+      <div class="pick-line">
+        <span class="pick-label">Pick</span>
+        <span class="pick-value">Cleveland Browns +8.7</span>
+      </div>
+      <div class="metric-grid">
+        <div>
+          <div class="m-label">ATS cover %</div>
+          <div class="m-value">55.9%</div>
+        </div>
+        <div>
+          <div class="m-label">Market spread</div>
+          <div class="m-value">JAX -8.7 / CLE +8.7</div>
+        </div>
+        <div>
+          <div class="m-label">Books (spread)</div>
+          <div class="m-value">9</div>
+        </div>
+        <div>
+          <div class="m-label">Books (moneyline)</div>
+          <div class="m-value">9</div>
+        </div>
+      </div>
+      
+    </article>
+    
+
+    <article class="game-card tier-low">
+      <div class="card-top">
+        <span class="badge low">#13 · 1 pts</span>
+        <span class="badge good">ATS cover %</span>
+      </div>
+      <h3 class="matchup">ATL @ PIT</h3>
+      <div class="matchup-full">Atlanta Falcons at Pittsburgh Steelers</div>
+      <div class="pick-line">
+        <span class="pick-label">Pick</span>
+        <span class="pick-value">Pittsburgh Steelers -3.5</span>
+      </div>
+      <div class="metric-grid">
+        <div>
+          <div class="m-label">ATS cover %</div>
+          <div class="m-value">51.6%</div>
+        </div>
+        <div>
+          <div class="m-label">Market spread</div>
+          <div class="m-value">PIT -3.5 / ATL +3.5</div>
+        </div>
+        <div>
+          <div class="m-label">Books (spread)</div>
+          <div class="m-value">9</div>
+        </div>
+        <div>
+          <div class="m-label">Books (moneyline)</div>
+          <div class="m-value">9</div>
+        </div>
+      </div>
+      
+    </article>
+    
+    </div>
+
+    <footer class="note">
+      Model %/ATS %/spreads are research/decision-support estimates, not a
+      guarantee of outcomes. Spreads are a no-vig consensus average across
+      every US bookmaker The Odds API returned for each game.
+    </footer>
+  </div>
+</body>
+</html>

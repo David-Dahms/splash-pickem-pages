@@ -1,0 +1,1369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pick'em Reasoning &amp; History</title>
+<style>
+
+:root {
+  color-scheme: light dark;
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --surface-2: #f9fafb;
+  --border: #e2e4e9;
+  --text: #14161a;
+  --text-dim: #5b6270;
+  --accent: #2f6fed;
+  --accent-soft: #e8f0fe;
+  --good: #16794f;
+  --good-bg: #e5f6ee;
+  --bad: #b3261e;
+  --bad-bg: #fbe9e8;
+  --warn: #9a6700;
+  --warn-bg: #fff4dc;
+  --high: #2f6fed;
+  --high-bg: #e8f0fe;
+  --mid: #6b5fd4;
+  --mid-bg: #efedfc;
+  --low: #5b6270;
+  --low-bg: #eceef1;
+  --shadow: 0 1px 2px rgba(20, 22, 26, 0.06), 0 4px 16px rgba(20, 22, 26, 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101215;
+    --surface: #191c20;
+    --surface-2: #1f2226;
+    --border: #2c3036;
+    --text: #eceef1;
+    --text-dim: #9aa1ac;
+    --accent: #6c9bff;
+    --accent-soft: #1c2a4a;
+    --good: #4fd196;
+    --good-bg: #103322;
+    --bad: #ff7a70;
+    --bad-bg: #3a1917;
+    --warn: #e3b341;
+    --warn-bg: #3a2d0d;
+    --high: #6c9bff;
+    --high-bg: #1c2a4a;
+    --mid: #b0a4ff;
+    --mid-bg: #29234d;
+    --low: #9aa1ac;
+    --low-bg: #24272c;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  padding: 24px 16px 64px;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+header.top {
+  margin-bottom: 24px;
+}
+
+header.top h1 {
+  margin: 0 0 4px;
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+}
+
+header.top .sub {
+  color: var(--text-dim);
+  font-size: 0.92rem;
+}
+
+nav.site-links {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+nav.site-links a {
+  font-size: 0.82rem;
+  text-decoration: none;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+nav.site-links a.active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.stat-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: var(--shadow);
+}
+
+.stat-tile .label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.stat-tile .value {
+  font-size: 1.25rem;
+  font-weight: 650;
+}
+
+.banner {
+  background: var(--warn-bg);
+  color: var(--warn);
+  border: 1px solid var(--warn);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 650;
+  padding: 3px 9px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.badge.high { color: var(--high); background: var(--high-bg); }
+.badge.mid { color: var(--mid); background: var(--mid-bg); }
+.badge.low { color: var(--low); background: var(--low-bg); }
+.badge.good { color: var(--good); background: var(--good-bg); }
+.badge.bad { color: var(--bad); background: var(--bad-bg); }
+
+footer.note {
+  margin-top: 32px;
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+
+.game-detail {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--low);
+  border-radius: 14px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.game-detail.tier-high { border-left-color: var(--high); }
+.game-detail.tier-mid { border-left-color: var(--mid); }
+.game-detail.tier-low { border-left-color: var(--low); }
+
+.game-detail summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.game-detail summary::-webkit-details-marker { display: none; }
+
+.summary-title {
+  font-weight: 650;
+  font-size: 1rem;
+}
+
+.summary-pick {
+  margin-left: auto;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.detail-body {
+  padding: 0 18px 20px;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 24px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+@media (max-width: 720px) {
+  .detail-body { grid-template-columns: 1fr; }
+}
+
+.detail-body h4 {
+  margin: 0 0 10px;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+}
+
+.reasoning ol {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.reasoning li { margin-bottom: 8px; }
+
+.projected {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  background: var(--surface-2);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+table th, table td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+table thead th {
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+table tbody th {
+  font-weight: 500;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.methodology {
+  margin-top: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+}
+
+.methodology h2 {
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.methodology table th {
+  width: 180px;
+  color: var(--text-dim);
+  font-weight: 600;
+  vertical-align: top;
+}
+
+.methodology table td {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+</style>
+</head>
+<body>
+  <div class="page">
+    <header class="top">
+      <h1>Reasoning &amp; History</h1>
+      <div class="sub">Per-game model walkthrough and the ESPN stats behind each rating.</div>
+    </header>
+
+    <nav class="site-links">
+      <a href="summary.html">Summary</a>
+      <a class="active" href="detail.html">Historical &amp; Reasoning</a>
+    </nav>
+
+    
+    <details class="game-detail tier-high" open>
+      <summary>
+        <span class="badge high">#1 &middot; 13 pts</span>
+        <span class="summary-title">BAL @ IND</span>
+        <span class="summary-pick">Indianapolis Colts +3.4</span>
+      </summary>
+
+      <div class="detail-body">
+        <div class="reasoning">
+          <h4>Reasoning</h4>
+          <ol><li>Regressed ratings: IND +1.33 vs BAL +0.85, pulled toward league-average from raw historical rating (regression retains 65% of the prior-season signal).</li><li>Add home-field edge (~+2.50 pts backed out of the projection) &rarr; predicted margin of +3.0 pts for IND.</li><li>Predicted margin converts to a straight-up win probability of 51.7% IND / 48.3% BAL (source: ESPN model + market).</li><li>Consensus spread from 9 book(s): BAL -3.4 / IND +3.4.</li><li>Model margin vs. spread &rarr; cover probability of 71.5% IND / 28.5% BAL.</li><li>Decision basis: <strong>ATS</strong> &mdash; pick made on cover probability, not just who wins outright.</li></ol>
+          <div class="projected">
+            Projected score: BAL 22.5
+            &ndash; IND 25.5
+          </div>
+        </div>
+
+        <div class="stats">
+          <h4>ESPN historical stats (this season)</h4>
+          <table>
+            <thead>
+              <tr><th></th><th>IND (home)</th><th>BAL (away)</th></tr>
+            </thead>
+            <tbody>
+              
+    <tr>
+      <th>Record</th>
+      <td>9-9</td>
+      <td>9-9</td>
+    </tr>
+    
+    <tr>
+      <th>Win %</th>
+      <td>50.0%</td>
+      <td>50.0%</td>
+    </tr>
+    
+    <tr>
+      <th>Points for / game</th>
+      <td>28.2</td>
+      <td>25.2</td>
+    </tr>
+    
+    <tr>
+      <th>Points against / game</th>
+      <td>23.7</td>
+      <td>22.3</td>
+    </tr>
+    
+    <tr>
+      <th>Avg scoring margin</th>
+      <td>+4.5</td>
+      <td>+2.9</td>
+    </tr>
+    
+    <tr>
+      <th>Strength of schedule</th>
+      <td>+0.343</td>
+      <td>-0.130</td>
+    </tr>
+    
+    <tr>
+      <th>Raw rating (historical)</th>
+      <td>+2.05</td>
+      <td>+1.31</td>
+    </tr>
+    
+    <tr>
+      <th>Regressed model rating</th>
+      <td>+1.33</td>
+      <td>+0.85</td>
+    </tr>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+    
+
+    <details class="game-detail tier-high" >
+      <summary>
+        <span class="badge high">#2 &middot; 12 pts</span>
+        <span class="summary-title">DAL @ NYG</span>
+        <span class="summary-pick">New York Giants +4.5</span>
+      </summary>
+
+      <div class="detail-body">
+        <div class="reasoning">
+          <h4>Reasoning</h4>
+          <ol><li>Regressed ratings: NYG -1.07 vs DAL -0.37, pulled toward league-average from raw historical rating (regression retains 65% of the prior-season signal).</li><li>Add home-field edge (~+2.50 pts backed out of the projection) &rarr; predicted margin of +1.8 pts for NYG.</li><li>Predicted margin converts to a straight-up win probability of 47.6% NYG / 52.4% DAL (source: ESPN model + market).</li><li>Consensus spread from 1 book(s): DAL -4.5 / NYG +4.5.</li><li>Model margin vs. spread &rarr; cover probability of 71.1% NYG / 28.9% DAL.</li><li>Decision basis: <strong>ATS</strong> &mdash; pick made on cover probability, not just who wins outright.</li></ol>
+          <div class="projected">
+            Projected score: DAL 23.1
+            &ndash; NYG 24.9
+          </div>
+        </div>
+
+        <div class="stats">
+          <h4>ESPN historical stats (this season)</h4>
+          <table>
+            <thead>
+              <tr><th></th><th>NYG (home)</th><th>DAL (away)</th></tr>
+            </thead>
+            <tbody>
+              
+    <tr>
+      <th>Record</th>
+      <td>5-13</td>
+      <td>8-9-1</td>
+    </tr>
+    
+    <tr>
+      <th>Win %</th>
+      <td>27.8%</td>
+      <td>47.2%</td>
+    </tr>
+    
+    <tr>
+      <th>Points for / game</th>
+      <td>23.5</td>
+      <td>27.9</td>
+    </tr>
+    
+    <tr>
+      <th>Points against / game</th>
+      <td>24.9</td>
+      <td>29.1</td>
+    </tr>
+    
+    <tr>
+      <th>Avg scoring margin</th>
+      <td>-1.4</td>
+      <td>-1.2</td>
+    </tr>
+    
+    <tr>
+      <th>Strength of schedule</th>
+      <td>+0.432</td>
+      <td>-1.199</td>
+    </tr>
+    
+    <tr>
+      <th>Raw rating (historical)</th>
+      <td>-1.64</td>
+      <td>-0.57</td>
+    </tr>
+    
+    <tr>
+      <th>Regressed model rating</th>
+      <td>-1.07</td>
+      <td>-0.37</td>
+    </tr>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+    
+
+    <details class="game-detail tier-high" >
+      <summary>
+        <span class="badge high">#3 &middot; 11 pts</span>
+        <span class="summary-title">GB @ MIN</span>
+        <span class="summary-pick">Minnesota Vikings +4.5</span>
+      </summary>
+
+      <div class="detail-body">
+        <div class="reasoning">
+          <h4>Reasoning</h4>
+          <ol><li>Regressed ratings: MIN +0.03 vs GB +0.81, pulled toward league-average from raw historical rating (regression retains 65% of the prior-season signal).</li><li>Add home-field edge (~+2.50 pts backed out of the projection) &rarr; predicted margin of +1.7 pts for MIN.</li><li>Predicted margin converts to a straight-up win probability of 46.4% MIN / 53.6% GB (source: ESPN model + market).</li><li>Consensus spread from 2 book(s): GB -4.5 / MIN +4.5.</li><li>Model margin vs. spread &rarr; cover probability of 70.9% MIN / 29.1% GB.</li><li>Decision basis: <strong>ATS</strong> &mdash; pick made on cover probability, not just who wins outright.</li></ol>
+          <div class="projected">
+            Projected score: GB 23.1
+            &ndash; MIN 24.9
+          </div>
+        </div>
+
+        <div class="stats">
+          <h4>ESPN historical stats (this season)</h4>
+          <table>
+            <thead>
+              <tr><th></th><th>MIN (home)</th><th>GB (away)</th></tr>
+            </thead>
+            <tbody>
+              
+    <tr>
+      <th>Record</th>
+      <td>9-9</td>
+      <td>10-8-1</td>
+    </tr>
+    
+    <tr>
+      <th>Win %</th>
+      <td>50.0%</td>
+      <td>55.3%</td>
+    </tr>
+    
+    <tr>
+      <th>Points for / game</th>
+      <td>19.8</td>
+      <td>23.1</td>
+    </tr>
+    
+    <tr>
+      <th>Points against / game</th>
+      <td>19.8</td>
+      <td>20.9</td>
+    </tr>
+    
+    <tr>
+      <th>Avg scoring margin</th>
+      <td>+0.1</td>
+      <td>+2.1</td>
+    </tr>
+    
+    <tr>
+      <th>Strength of schedule</th>
+      <td>-0.057</td>
+      <td>+0.165</td>
+    </tr>
+    
+    <tr>
+      <th>Raw rating (historical)</th>
+      <td>+0.04</td>
+      <td>+1.24</td>
+    </tr>
+    
+    <tr>
+      <th>Regressed model rating</th>
+      <td>+0.03</td>
+      <td>+0.81</td>
+    </tr>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+    
+
+    <details class="game-detail tier-high" >
+      <summary>
+        <span class="badge high">#4 &middot; 10 pts</span>
+        <span class="summary-title">WSH @ PHI</span>
+        <span class="summary-pick">Philadelphia Eagles -2.0</span>
+      </summary>
+
+      <div class="detail-body">
+        <div class="reasoning">
+          <h4>Reasoning</h4>
+          <ol><li>Regressed ratings: PHI +1.20 vs WSH -2.52, pulled toward league-average from raw historical rating (regression retains 65% of the prior-season signal).</li><li>Add home-field edge (~+2.50 pts backed out of the projection) &rarr; predicted margin of +6.2 pts for PHI.</li><li>Predicted margin converts to a straight-up win probability of 63.8% PHI / 36.2% WSH (source: ESPN model + market).</li><li>Consensus spread from 2 book(s): PHI -2.0 / WSH +2.0.</li><li>Model margin vs. spread &rarr; cover probability of 64.6% PHI / 35.4% WSH.</li><li>Decision basis: <strong>ATS</strong> &mdash; pick made on cover probability, not just who wins outright.</li></ol>
+          <div class="projected">
+            Projected score: WSH 20.9
+            &ndash; PHI 27.1
+          </div>
+        </div>
+
+        <div class="stats">
+          <h4>ESPN historical stats (this season)</h4>
+          <table>
+            <thead>
+              <tr><th></th><th>PHI (home)</th><th>WSH (away)</th></tr>
+            </thead>
+            <tbody>
+              
+    <tr>
+      <th>Record</th>
+      <td>12-7</td>
+      <td>5-13</td>
+    </tr>
+    
+    <tr>
+      <th>Win %</th>
+      <td>63.2%</td>
+      <td>27.8%</td>
+    </tr>
+    
+    <tr>
+      <th>Points for / game</th>
+      <td>21.9</td>
+      <td>19.9</td>
+    </tr>
+    
+    <tr>
+      <th>Points against / game</th>
+      <td>19.2</td>
+      <td>26.7</td>
+    </tr>
+    
+    <tr>
+      <th>Avg scoring margin</th>
+      <td>+2.7</td>
+      <td>-6.8</td>
+    </tr>
+    
+    <tr>
+      <th>Strength of schedule</th>
+      <td>-0.372</td>
+      <td>+0.377</td>
+    </tr>
+    
+    <tr>
+      <th>Raw rating (historical)</th>
+      <td>+1.85</td>
+      <td>-3.88</td>
+    </tr>
+    
+    <tr>
+      <th>Regressed model rating</th>
+      <td>+1.20</td>
+      <td>-2.52</td>
+    </tr>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+    
+
+    <details class="game-detail tier-mid" >
+      <summary>
+        <span class="badge mid">#5 &middot; 9 pts</span>
+        <span class="summary-title">ARI @ LAC</span>
+        <span class="summary-pick">Arizona Cardinals +9.4</span>
+      </summary>
+
+      <div class="detail-body">
+        <div class="reasoning">
+          <h4>Reasoning</h4>
+          <ol><li>Regressed ratings: LAC +0.42 vs ARI -2.69, pulled toward league-average from raw historical rating (regression retains 65% of the prior-season signal).</li><li>Add home-field edge (~+2.50 pts backed out of the projection) &rarr; predicted margin of +5.6 pts for LAC.</li><li>Predicted margin converts to a straight-up win probability of 73.5% LAC / 26.5% ARI (source: ESPN model + market).</li><li>Consensus spread from 9 book(s): LAC -9.4 / ARI +9.4.</li><li>Model margin vs. spread &rarr; cover probability of 36.6% LAC / 63.4% ARI.</li><li>Decision basis: <strong>ATS</strong> &mdash; pick made on cover probability, not just who wins outright.</li></ol>
+          <div class="projected">
+            Projected score: ARI 21.2
+            &ndash; LAC 26.8
+          </div>
+        </div>
+
+        <div class="stats">
+          <h4>ESPN historical stats (this season)</h4>
+          <table>
+            <thead>
+              <tr><th></th><th>LAC (home)</th><th>ARI (away)</th></tr>
+            </thead>
+            <tbody>
+              
+    <tr>
+      <th>Record</th>
+      <td>11-8</td>
+      <td>4-14</td>
+    </tr>
+    
+    <tr>
+      <th>Win %</th>
+      <td>57.9%</td>
+      <td>22.2%</td>
+    </tr>
+    
+    <tr>
+      <th>Points for / game</th>
+      <td>20.7</td>
+      <td>20.8</td>
+    </tr>
+    
+    <tr>
+      <th>Points against / game</th>
+      <td>20.3</td>
+      <td>27.7</td>
+    </tr>
+    
+    <tr>
+      <th>Avg scoring margin</th>
+      <td>+0.4</td>
+      <td>-6.8</td>
+    </tr>
+    
+    <tr>
+      <th>Strength of schedule</th>
+      <td>+0.075</td>
+      <td>+0.884</td>
+    </tr>
+    
+    <tr>
+      <th>Raw rating (historical)</th>
+      <td>+0.65</td>
+      <td>-4.13</td>
+    </tr>
+    
+    <tr>
+      <th>Regressed model rating</th>
+      <td>+0.42</td>
+      <td>-2.69</td>
+    </tr>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+    
+
+    <details class="game-detail tier-mid" >
+      <summary>
+        <span class="badge mid">#6 &middot; 8 pts</span>
+        <span class="summary-title">BUF @ HOU</span>
+        <span class="summary-pick">Houston Texans +1.0</span>
+      </summary>
+
+      <div class="detail-body">
+        <div class="reasoning">
+          <h4>Reasoning</h4>
+          <ol><li>Regressed ratings: HOU +2.68 vs BUF +2.39, pulled toward league-average from raw historical rating (regression retains 65% of the prior-season signal).</li><li>Add home-field edge (~+2.50 pts backed out of the projection) &rarr; predicted margin of +2.8 pts for HOU.</li><li>Predicted margin converts to a straight-up win probability of 55.2% HOU / 44.8% BUF (source: ESPN model + market).</li><li>Consensus spread from 9 book(s): BUF -1.0 / HOU +1.0.</li><li>Model margin vs. spread &rarr; cover probability of 63.2% HOU / 36.8% BUF.</li><li>Decision basis: <strong>ATS</strong> &mdash; pick made on cover probability, not just who wins outright.</li></ol>
+          <div class="projected">
+            Projected score: BUF 22.6
+            &ndash; HOU 25.4
+          </div>
+        </div>
+
+        <div class="stats">
+          <h4>ESPN historical stats (this season)</h4>
+          <table>
+            <thead>
+              <tr><th></th><th>HOU (home)</th><th>BUF (away)</th></tr>
+            </thead>
+            <tbody>
+              
+    <tr>
+      <th>Record</th>
+      <td>14-6</td>
+      <td>14-6</td>
+    </tr>
+    
+    <tr>
+      <th>Win %</th>
+      <td>70.0%</td>
+      <td>70.0%</td>
+    </tr>
+    
+    <tr>
+      <th>Points for / game</th>
+      <td>23.8</td>
+      <td>28.1</td>
+    </tr>
+    
+    <tr>
+      <th>Points against / game</th>
+      <td>16.8</td>
+      <td>22.1</td>
+    </tr>
+    
+    <tr>
+      <th>Avg scoring margin</th>
+      <td>+7.0</td>
+      <td>+6.0</td>
+    </tr>
+    
+    <tr>
+      <th>Strength of schedule</th>
+      <td>+1.038</td>
+      <td>-0.312</td>
+    </tr>
+    
+    <tr>
+      <th>Raw rating (historical)</th>
+      <td>+4.12</td>
+      <td>+3.67</td>
+    </tr>
+    
+    <tr>
+      <th>Regressed model rating</th>
+      <td>+2.68</td>
+      <td>+2.39</td>
+    </tr>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+    
+
+    <details class="game-detail tier-mid" >
+      <summary>
+        <span class="badge mid">#7 &middot; 7 pts</span>
+        <span class="summary-title">MIA @ LV</span>
+        <span class="summary-pick">Miami Dolphins +3.1</span>
+      </summary>
+
+      <div class="detail-body">
+        <div class="reasoning">
+          <h4>Reasoning</h4>
+          <ol><li>Regressed ratings: LV -4.14 vs MIA -1.20, pulled toward league-average from raw historical rating (regression retains 65% of the prior-season signal).</li><li>Add home-field edge (~+2.50 pts backed out of the projection) &rarr; predicted margin of -0.4 pts for LV.</li><li>Predicted margin converts to a straight-up win probability of 53.2% LV / 46.8% MIA (source: ESPN model + market).</li><li>Consensus spread from 9 book(s): LV -3.1 / MIA +3.1.</li><li>Model margin vs. spread &rarr; cover probability of 37.8% LV / 62.2% MIA.</li><li>Decision basis: <strong>ATS</strong> &mdash; pick made on cover probability, not just who wins outright.</li></ol>
+          <div class="projected">
+            Projected score: MIA 24.2
+            &ndash; LV 23.8
+          </div>
+        </div>
+
+        <div class="stats">
+          <h4>ESPN historical stats (this season)</h4>
+          <table>
+            <thead>
+              <tr><th></th><th>LV (home)</th><th>MIA (away)</th></tr>
+            </thead>
+            <tbody>
+              
+    <tr>
+      <th>Record</th>
+      <td>3-15</td>
+      <td>8-10</td>
+    </tr>
+    
+    <tr>
+      <th>Win %</th>
+      <td>16.7%</td>
+      <td>44.4%</td>
+    </tr>
+    
+    <tr>
+      <th>Points for / game</th>
+      <td>13.9</td>
+      <td>20.1</td>
+    </tr>
+    
+    <tr>
+      <th>Points against / game</th>
+      <td>25.1</td>
+      <td>23.9</td>
+    </tr>
+    
+    <tr>
+      <th>Avg scoring margin</th>
+      <td>-11.2</td>
+      <td>-3.8</td>
+    </tr>
+    
+    <tr>
+      <th>Strength of schedule</th>
+      <td>+0.549</td>
+      <td>-0.295</td>
+    </tr>
+    
+    <tr>
+      <th>Raw rating (historical)</th>
+      <td>-6.36</td>
+      <td>-1.85</td>
+    </tr>
+    
+    <tr>
+      <th>Regressed model rating</th>
+      <td>-4.14</td>
+      <td>-1.20</td>
+    </tr>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+    
+
+    <details class="game-detail tier-mid" >
+      <summary>
+        <span class="badge mid">#8 &middot; 6 pts</span>
+        <span class="summary-title">CHI @ CAR</span>
+        <span class="summary-pick">Carolina Panthers +3.0</span>
+      </summary>
+
+      <div class="detail-body">
+        <div class="reasoning">
+          <h4>Reasoning</h4>
+          <ol><li>Regressed ratings: CAR -1.37 vs CHI +0.99, pulled toward league-average from raw historical rating (regression retains 65% of the prior-season signal).</li><li>Add home-field edge (~+2.50 pts backed out of the projection) &rarr; predicted margin of +0.1 pts for CAR.</li><li>Predicted margin converts to a straight-up win probability of 46.2% CAR / 53.8% CHI (source: ESPN model + market).</li><li>Consensus spread from 9 book(s): CHI -3.0 / CAR +3.0.</li><li>Model margin vs. spread &rarr; cover probability of 61.0% CAR / 39.0% CHI.</li><li>Decision basis: <strong>ATS</strong> &mdash; pick made on cover probability, not just who wins outright.</li></ol>
+          <div class="projected">
+            Projected score: CHI 23.9
+            &ndash; CAR 24.1
+          </div>
+        </div>
+
+        <div class="stats">
+          <h4>ESPN historical stats (this season)</h4>
+          <table>
+            <thead>
+              <tr><th></th><th>CAR (home)</th><th>CHI (away)</th></tr>
+            </thead>
+            <tbody>
+              
+    <tr>
+      <th>Record</th>
+      <td>8-11</td>
+      <td>13-7</td>
+    </tr>
+    
+    <tr>
+      <th>Win %</th>
+      <td>42.1%</td>
+      <td>65.0%</td>
+    </tr>
+    
+    <tr>
+      <th>Points for / game</th>
+      <td>18.5</td>
+      <td>25.9</td>
+    </tr>
+    
+    <tr>
+      <th>Points against / game</th>
+      <td>22.8</td>
+      <td>24.4</td>
+    </tr>
+    
+    <tr>
+      <th>Avg scoring margin</th>
+      <td>-4.3</td>
+      <td>+1.4</td>
+    </tr>
+    
+    <tr>
+      <th>Strength of schedule</th>
+      <td>+0.494</td>
+      <td>-0.258</td>
+    </tr>
+    
+    <tr>
+      <th>Raw rating (historical)</th>
+      <td>-2.10</td>
+      <td>+1.52</td>
+    </tr>
+    
+    <tr>
+      <th>Regressed model rating</th>
+      <td>-1.37</td>
+      <td>+0.99</td>
+    </tr>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+    
+
+    <details class="game-detail tier-low" >
+      <summary>
+        <span class="badge low">#9 &middot; 5 pts</span>
+        <span class="summary-title">TB @ CIN</span>
+        <span class="summary-pick">Tampa Bay Buccaneers +3.8</span>
+      </summary>
+
+      <div class="detail-body">
+        <div class="reasoning">
+          <h4>Reasoning</h4>
+          <ol><li>Regressed ratings: CIN -2.02 vs TB -0.63, pulled toward league-average from raw historical rating (regression retains 65% of the prior-season signal).</li><li>Add home-field edge (~+2.50 pts backed out of the projection) &rarr; predicted margin of +1.1 pts for CIN.</li><li>Predicted margin converts to a straight-up win probability of 58.1% CIN / 41.9% TB (source: ESPN model + market).</li><li>Consensus spread from 9 book(s): CIN -3.8 / TB +3.8.</li><li>Model margin vs. spread &rarr; cover probability of 40.6% CIN / 59.4% TB.</li><li>Decision basis: <strong>ATS</strong> &mdash; pick made on cover probability, not just who wins outright.</li></ol>
+          <div class="projected">
+            Projected score: TB 23.4
+            &ndash; CIN 24.6
+          </div>
+        </div>
+
+        <div class="stats">
+          <h4>ESPN historical stats (this season)</h4>
+          <table>
+            <thead>
+              <tr><th></th><th>CIN (home)</th><th>TB (away)</th></tr>
+            </thead>
+            <tbody>
+              
+    <tr>
+      <th>Record</th>
+      <td>6-12</td>
+      <td>8-10</td>
+    </tr>
+    
+    <tr>
+      <th>Win %</th>
+      <td>33.3%</td>
+      <td>44.4%</td>
+    </tr>
+    
+    <tr>
+      <th>Points for / game</th>
+      <td>23.8</td>
+      <td>22.2</td>
+    </tr>
+    
+    <tr>
+      <th>Points against / game</th>
+      <td>29.6</td>
+      <td>24.1</td>
+    </tr>
+    
+    <tr>
+      <th>Avg scoring margin</th>
+      <td>-5.8</td>
+      <td>-1.9</td>
+    </tr>
+    
+    <tr>
+      <th>Strength of schedule</th>
+      <td>+0.482</td>
+      <td>+0.442</td>
+    </tr>
+    
+    <tr>
+      <th>Raw rating (historical)</th>
+      <td>-3.11</td>
+      <td>-0.97</td>
+    </tr>
+    
+    <tr>
+      <th>Regressed model rating</th>
+      <td>-2.02</td>
+      <td>-0.63</td>
+    </tr>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+    
+
+    <details class="game-detail tier-low" >
+      <summary>
+        <span class="badge low">#10 &middot; 4 pts</span>
+        <span class="summary-title">NYJ @ TEN</span>
+        <span class="summary-pick">Tennessee Titans -0.9</span>
+      </summary>
+
+      <div class="detail-body">
+        <div class="reasoning">
+          <h4>Reasoning</h4>
+          <ol><li>Regressed ratings: TEN -3.58 vs NYJ -4.14, pulled toward league-average from raw historical rating (regression retains 65% of the prior-season signal).</li><li>Add home-field edge (~+2.50 pts backed out of the projection) &rarr; predicted margin of +3.1 pts for TEN.</li><li>Predicted margin converts to a straight-up win probability of 57.6% TEN / 42.4% NYJ (source: ESPN model + market).</li><li>Consensus spread from 9 book(s): TEN -0.9 / NYJ +0.9.</li><li>Model margin vs. spread &rarr; cover probability of 57.7% TEN / 42.3% NYJ.</li><li>Decision basis: <strong>ATS</strong> &mdash; pick made on cover probability, not just who wins outright.</li></ol>
+          <div class="projected">
+            Projected score: NYJ 22.5
+            &ndash; TEN 25.5
+          </div>
+        </div>
+
+        <div class="stats">
+          <h4>ESPN historical stats (this season)</h4>
+          <table>
+            <thead>
+              <tr><th></th><th>TEN (home)</th><th>NYJ (away)</th></tr>
+            </thead>
+            <tbody>
+              
+    <tr>
+      <th>Record</th>
+      <td>4-14</td>
+      <td>3-15</td>
+    </tr>
+    
+    <tr>
+      <th>Win %</th>
+      <td>22.2%</td>
+      <td>16.7%</td>
+    </tr>
+    
+    <tr>
+      <th>Points for / game</th>
+      <td>17.1</td>
+      <td>17.6</td>
+    </tr>
+    
+    <tr>
+      <th>Points against / game</th>
+      <td>27.3</td>
+      <td>29.0</td>
+    </tr>
+    
+    <tr>
+      <th>Avg scoring margin</th>
+      <td>-10.2</td>
+      <td>-11.4</td>
+    </tr>
+    
+    <tr>
+      <th>Strength of schedule</th>
+      <td>+1.631</td>
+      <td>+0.696</td>
+    </tr>
+    
+    <tr>
+      <th>Raw rating (historical)</th>
+      <td>-5.51</td>
+      <td>-6.36</td>
+    </tr>
+    
+    <tr>
+      <th>Regressed model rating</th>
+      <td>-3.58</td>
+      <td>-4.14</td>
+    </tr>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+    
+
+    <details class="game-detail tier-low" >
+      <summary>
+        <span class="badge low">#11 &middot; 3 pts</span>
+        <span class="summary-title">NO @ DET</span>
+        <span class="summary-pick">New Orleans Saints +6.9</span>
+      </summary>
+
+      <div class="detail-body">
+        <div class="reasoning">
+          <h4>Reasoning</h4>
+          <ol><li>Regressed ratings: DET +0.85 vs NO -1.85, pulled toward league-average from raw historical rating (regression retains 65% of the prior-season signal).</li><li>Add home-field edge (~+2.50 pts backed out of the projection) &rarr; predicted margin of +5.2 pts for DET.</li><li>Predicted margin converts to a straight-up win probability of 69.9% DET / 30.1% NO (source: ESPN model + market).</li><li>Consensus spread from 9 book(s): DET -6.9 / NO +6.9.</li><li>Model margin vs. spread &rarr; cover probability of 43.8% DET / 56.2% NO.</li><li>Decision basis: <strong>ATS</strong> &mdash; pick made on cover probability, not just who wins outright.</li></ol>
+          <div class="projected">
+            Projected score: NO 21.4
+            &ndash; DET 26.6
+          </div>
+        </div>
+
+        <div class="stats">
+          <h4>ESPN historical stats (this season)</h4>
+          <table>
+            <thead>
+              <tr><th></th><th>DET (home)</th><th>NO (away)</th></tr>
+            </thead>
+            <tbody>
+              
+    <tr>
+      <th>Record</th>
+      <td>9-9</td>
+      <td>6-12</td>
+    </tr>
+    
+    <tr>
+      <th>Win %</th>
+      <td>50.0%</td>
+      <td>33.3%</td>
+    </tr>
+    
+    <tr>
+      <th>Points for / game</th>
+      <td>27.1</td>
+      <td>18.1</td>
+    </tr>
+    
+    <tr>
+      <th>Points against / game</th>
+      <td>24.4</td>
+      <td>22.8</td>
+    </tr>
+    
+    <tr>
+      <th>Avg scoring margin</th>
+      <td>+2.7</td>
+      <td>-4.8</td>
+    </tr>
+    
+    <tr>
+      <th>Strength of schedule</th>
+      <td>+0.300</td>
+      <td>-0.107</td>
+    </tr>
+    
+    <tr>
+      <th>Raw rating (historical)</th>
+      <td>+1.30</td>
+      <td>-2.85</td>
+    </tr>
+    
+    <tr>
+      <th>Regressed model rating</th>
+      <td>+0.85</td>
+      <td>-1.85</td>
+    </tr>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+    
+
+    <details class="game-detail tier-low" >
+      <summary>
+        <span class="badge low">#12 &middot; 2 pts</span>
+        <span class="summary-title">CLE @ JAX</span>
+        <span class="summary-pick">Cleveland Browns +8.7</span>
+      </summary>
+
+      <div class="detail-body">
+        <div class="reasoning">
+          <h4>Reasoning</h4>
+          <ol><li>Regressed ratings: JAX +2.51 vs CLE -2.06, pulled toward league-average from raw historical rating (regression retains 65% of the prior-season signal).</li><li>Add home-field edge (~+2.50 pts backed out of the projection) &rarr; predicted margin of +7.1 pts for JAX.</li><li>Predicted margin converts to a straight-up win probability of 75.0% JAX / 25.0% CLE (source: ESPN model + market).</li><li>Consensus spread from 9 book(s): JAX -8.7 / CLE +8.7.</li><li>Model margin vs. spread &rarr; cover probability of 44.1% JAX / 55.9% CLE.</li><li>Decision basis: <strong>ATS</strong> &mdash; pick made on cover probability, not just who wins outright.</li></ol>
+          <div class="projected">
+            Projected score: CLE 20.5
+            &ndash; JAX 27.5
+          </div>
+        </div>
+
+        <div class="stats">
+          <h4>ESPN historical stats (this season)</h4>
+          <table>
+            <thead>
+              <tr><th></th><th>JAX (home)</th><th>CLE (away)</th></tr>
+            </thead>
+            <tbody>
+              
+    <tr>
+      <th>Record</th>
+      <td>13-6</td>
+      <td>6-12</td>
+    </tr>
+    
+    <tr>
+      <th>Win %</th>
+      <td>68.4%</td>
+      <td>33.3%</td>
+    </tr>
+    
+    <tr>
+      <th>Points for / game</th>
+      <td>26.5</td>
+      <td>16.6</td>
+    </tr>
+    
+    <tr>
+      <th>Points against / game</th>
+      <td>19.8</td>
+      <td>22.0</td>
+    </tr>
+    
+    <tr>
+      <th>Avg scoring margin</th>
+      <td>+6.7</td>
+      <td>-5.4</td>
+    </tr>
+    
+    <tr>
+      <th>Strength of schedule</th>
+      <td>-0.096</td>
+      <td>-0.196</td>
+    </tr>
+    
+    <tr>
+      <th>Raw rating (historical)</th>
+      <td>+3.86</td>
+      <td>-3.16</td>
+    </tr>
+    
+    <tr>
+      <th>Regressed model rating</th>
+      <td>+2.51</td>
+      <td>-2.06</td>
+    </tr>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+    
+
+    <details class="game-detail tier-low" >
+      <summary>
+        <span class="badge low">#13 &middot; 1 pts</span>
+        <span class="summary-title">ATL @ PIT</span>
+        <span class="summary-pick">Pittsburgh Steelers -3.5</span>
+      </summary>
+
+      <div class="detail-body">
+        <div class="reasoning">
+          <h4>Reasoning</h4>
+          <ol><li>Regressed ratings: PIT +0.28 vs ATL -1.16, pulled toward league-average from raw historical rating (regression retains 65% of the prior-season signal).</li><li>Add home-field edge (~+2.50 pts backed out of the projection) &rarr; predicted margin of +3.9 pts for PIT.</li><li>Predicted margin converts to a straight-up win probability of 63.1% PIT / 36.9% ATL (source: ESPN model + market).</li><li>Consensus spread from 9 book(s): PIT -3.5 / ATL +3.5.</li><li>Model margin vs. spread &rarr; cover probability of 51.6% PIT / 48.4% ATL.</li><li>Decision basis: <strong>ATS</strong> &mdash; pick made on cover probability, not just who wins outright.</li></ol>
+          <div class="projected">
+            Projected score: ATL 22.0
+            &ndash; PIT 26.0
+          </div>
+        </div>
+
+        <div class="stats">
+          <h4>ESPN historical stats (this season)</h4>
+          <table>
+            <thead>
+              <tr><th></th><th>PIT (home)</th><th>ATL (away)</th></tr>
+            </thead>
+            <tbody>
+              
+    <tr>
+      <th>Record</th>
+      <td>11-8</td>
+      <td>8-10</td>
+    </tr>
+    
+    <tr>
+      <th>Win %</th>
+      <td>57.9%</td>
+      <td>44.4%</td>
+    </tr>
+    
+    <tr>
+      <th>Points for / game</th>
+      <td>22.2</td>
+      <td>20.3</td>
+    </tr>
+    
+    <tr>
+      <th>Points against / game</th>
+      <td>22.5</td>
+      <td>24.0</td>
+    </tr>
+    
+    <tr>
+      <th>Avg scoring margin</th>
+      <td>-0.3</td>
+      <td>-3.7</td>
+    </tr>
+    
+    <tr>
+      <th>Strength of schedule</th>
+      <td>+0.336</td>
+      <td>-0.282</td>
+    </tr>
+    
+    <tr>
+      <th>Raw rating (historical)</th>
+      <td>+0.43</td>
+      <td>-1.78</td>
+    </tr>
+    
+    <tr>
+      <th>Regressed model rating</th>
+      <td>+0.28</td>
+      <td>-1.16</td>
+    </tr>
+    
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+    
+
+    <section class="methodology">
+      <h2>Methodology</h2>
+      <table><tr><th>Historical Data</th><td>Previous-season completed ESPN games</td></tr><tr><th>Team Rating</th><td>40% scoring margin, 30% win percentage, 30% offensive production</td></tr><tr><th>Home Field</th><td>NFL +1.75 points; college +2.5 points</td></tr><tr><th>Probability</th><td>Predicted margin converted through logistic probability</td></tr><tr><th>Market</th><td>Optional 40% market / 60% independent model blend, averaged (no-vig) across every US book The Odds API returns</td></tr><tr><th>Ats</th><td>Against-the-spread mode ranks and picks using model margin vs. the consensus sportsbook spread, instead of straight-up win probability. Games without a quoted spread fall back to straight-up for that game and are flagged with ats_warning.</td></tr><tr><th>Leverage</th><td>Model win probability minus field ownership</td></tr><tr><th>Confidence</th><td>Games ranked by decision score and assigned descending points</td></tr><tr><th>Note</th><td>Research/decision-support model; not a guarantee of outcomes.</td></tr></table>
+    </section>
+
+    <footer class="note">
+      Model %/ATS %/spreads are research/decision-support estimates, not a
+      guarantee of outcomes.
+    </footer>
+  </div>
+</body>
+</html>
