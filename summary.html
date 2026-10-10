@@ -479,21 +479,22 @@ details.books-cell[open] summary {
 .game-reasoning[open] summary .caret { transform: rotate(180deg); display: inline-block; }
 
 .basic-reasoning summary {
-  background: var(--accent-soft);
-  border: 1px solid var(--accent);
-  border-radius: 8px;
+  background: var(--mid-bg);
+  border: none;
+  border-left: 3px solid var(--mid);
+  border-radius: 6px;
   padding: 8px 12px;
-  color: var(--accent);
+  color: var(--mid);
   font-weight: 700;
-  transition: background 0.15s ease;
+  transition: filter 0.15s ease;
 }
 
 .basic-reasoning summary:hover {
-  background: var(--high-bg);
+  filter: brightness(1.08);
 }
 
 .basic-reasoning summary .caret {
-  color: var(--accent);
+  color: var(--mid);
   transition: transform 0.15s ease;
 }
 
@@ -17886,8 +17887,9 @@ details.books-cell[open] summary {
       }
 
       var expanded = card.classList.toggle("is-expanded");
-      var reasoningEspn = card.querySelector(".reasoning-espn");
-      if (reasoningEspn) reasoningEspn.open = expanded;
+      card
+        .querySelectorAll(".books-cell, .basic-reasoning, .reasoning-espn")
+        .forEach(function (d) { d.open = expanded; });
     });
   });
 })();
