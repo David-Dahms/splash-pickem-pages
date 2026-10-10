@@ -503,6 +503,30 @@ details.books-cell[open] summary {
   border-bottom-right-radius: 0;
 }
 
+.reasoning-espn summary {
+  background: var(--good-bg);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--good);
+  font-weight: 700;
+  transition: filter 0.15s ease;
+}
+
+.reasoning-espn summary:hover {
+  filter: brightness(1.08);
+}
+
+.reasoning-espn summary .caret {
+  color: var(--good);
+  transition: transform 0.15s ease;
+}
+
+.reasoning-espn[open] summary {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 .game-reasoning .detail-body {
   padding-top: 14px;
   display: grid;
