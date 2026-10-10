@@ -223,14 +223,17 @@ footer.note {
   grid-column: 1 / -1;
 }
 
-/* Books and the Reasoning & ESPN stats panel stay hidden until the
-   card itself is clicked (see card-expand script). */
+/* Books, Basic reasoning, and the Reasoning & ESPN stats panel
+   all stay hidden until the card itself is clicked (see
+   card-expand script). */
 .metric-grid .books-metric,
+.game-card .basic-reasoning,
 .game-card .reasoning-espn {
   display: none;
 }
 
 .game-card.is-expanded .metric-grid .books-metric,
+.game-card.is-expanded .basic-reasoning,
 .game-card.is-expanded .reasoning-espn {
   display: block;
 }
@@ -982,7 +985,7 @@ details.books-cell[open] summary {
       data-pick-line="7.0">
       <div class="card-top">
         <span class="badge high">#22 · 51 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">HOU @ TEN</h3>
       <div class="matchup-full">Houston Texans at Tennessee Titans</div>
@@ -1222,7 +1225,7 @@ details.books-cell[open] summary {
       data-pick-line="3.6666666666666665">
       <div class="card-top">
         <span class="badge high">#23 · 50 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">NYG @ WSH</h3>
       <div class="matchup-full">New York Giants at Washington Commanders</div>
@@ -1462,7 +1465,7 @@ details.books-cell[open] summary {
       data-pick-line="7.0">
       <div class="card-top">
         <span class="badge mid">#26 · 47 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">CIN @ MIA</h3>
       <div class="matchup-full">Cincinnati Bengals at Miami Dolphins</div>
@@ -1702,7 +1705,7 @@ details.books-cell[open] summary {
       data-pick-line="3.388888888888889">
       <div class="card-top">
         <span class="badge mid">#41 · 32 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">BAL @ ATL</h3>
       <div class="matchup-full">Baltimore Ravens at Atlanta Falcons</div>
@@ -1942,7 +1945,7 @@ details.books-cell[open] summary {
       data-pick-line="5.444444444444445">
       <div class="card-top">
         <span class="badge mid">#44 · 29 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">DET @ ARI</h3>
       <div class="matchup-full">Detroit Lions at Arizona Cardinals</div>
@@ -2182,7 +2185,7 @@ details.books-cell[open] summary {
       data-pick-line="7.555555555555555">
       <div class="card-top">
         <span class="badge low">#52 · 21 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">PHI @ JAX</h3>
       <div class="matchup-full">Philadelphia Eagles at Jacksonville Jaguars</div>
@@ -2422,7 +2425,7 @@ details.books-cell[open] summary {
       data-pick-line="2.111111111111111">
       <div class="card-top">
         <span class="badge low">#53 · 20 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">CLE @ NYJ</h3>
       <div class="matchup-full">Cleveland Browns at New York Jets</div>
@@ -2662,7 +2665,7 @@ details.books-cell[open] summary {
       data-pick-line="3.111111111111111">
       <div class="card-top">
         <span class="badge low">#54 · 19 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">BUF @ LAR</h3>
       <div class="matchup-full">Buffalo Bills at Los Angeles Rams</div>
@@ -2902,7 +2905,7 @@ details.books-cell[open] summary {
       data-pick-line="3.111111111111111">
       <div class="card-top">
         <span class="badge low">#55 · 18 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">SF @ SEA</h3>
       <div class="matchup-full">San Francisco 49ers at Seattle Seahawks</div>
@@ -3142,7 +3145,7 @@ details.books-cell[open] summary {
       data-pick-line="3.5">
       <div class="card-top">
         <span class="badge low">#56 · 17 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">DEN @ LAC</h3>
       <div class="matchup-full">Denver Broncos at Los Angeles Chargers</div>
@@ -3382,7 +3385,7 @@ details.books-cell[open] summary {
       data-pick-line="-2.0555555555555554">
       <div class="card-top">
         <span class="badge low">#60 · 13 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">MIN @ NO</h3>
       <div class="matchup-full">Minnesota Vikings at New Orleans Saints</div>
@@ -3622,7 +3625,7 @@ details.books-cell[open] summary {
       data-pick-line="-1.3333333333333333">
       <div class="card-top">
         <span class="badge low">#64 · 9 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">CHI @ GB</h3>
       <div class="matchup-full">Chicago Bears at Green Bay Packers</div>
@@ -3862,7 +3865,7 @@ details.books-cell[open] summary {
       data-pick-line="2.611111111111111">
       <div class="card-top">
         <span class="badge low">#65 · 8 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">IND @ PIT</h3>
       <div class="matchup-full">Indianapolis Colts at Pittsburgh Steelers</div>
@@ -4102,7 +4105,7 @@ details.books-cell[open] summary {
       data-pick-line="3.5">
       <div class="card-top">
         <span class="badge low">#71 · 2 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">LV @ NE</h3>
       <div class="matchup-full">Las Vegas Raiders at New England Patriots</div>
@@ -5280,7 +5283,7 @@ details.books-cell[open] summary {
       data-pick-line="33.0">
       <div class="card-top">
         <span class="badge high">#5 · 68 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">MD @ OSU</h3>
       <div class="matchup-full">Maryland Terrapins at Ohio State Buckeyes</div>
@@ -5520,7 +5523,7 @@ details.books-cell[open] summary {
       data-pick-line="35.375">
       <div class="card-top">
         <span class="badge high">#6 · 67 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">BALL @ NU</h3>
       <div class="matchup-full">Ball State Cardinals at Northwestern Wildcats</div>
@@ -5985,7 +5988,7 @@ details.books-cell[open] summary {
       data-pick-line="39.6875">
       <div class="card-top">
         <span class="badge high">#8 · 65 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">STAN @ ND</h3>
       <div class="matchup-full">Stanford Cardinal at Notre Dame Fighting Irish</div>
@@ -6450,7 +6453,7 @@ details.books-cell[open] summary {
       data-pick-line="8.666666666666666">
       <div class="card-top">
         <span class="badge high">#10 · 63 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">SAC @ BGSU</h3>
       <div class="matchup-full">Sacramento State Hornets at Bowling Green Falcons</div>
@@ -6690,7 +6693,7 @@ details.books-cell[open] summary {
       data-pick-line="28.555555555555557">
       <div class="card-top">
         <span class="badge high">#11 · 62 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">CLT @ UNT</h3>
       <div class="matchup-full">Charlotte 49ers at North Texas Mean Green</div>
@@ -6930,7 +6933,7 @@ details.books-cell[open] summary {
       data-pick-line="9.375">
       <div class="card-top">
         <span class="badge high">#12 · 61 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">MISS @ VAN</h3>
       <div class="matchup-full">Ole Miss Rebels at Vanderbilt Commodores</div>
@@ -7170,7 +7173,7 @@ details.books-cell[open] summary {
       data-pick-line="-3.5555555555555554">
       <div class="card-top">
         <span class="badge high">#13 · 60 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">UNC @ PITT</h3>
       <div class="matchup-full">North Carolina Tar Heels at Pittsburgh Panthers</div>
@@ -7410,7 +7413,7 @@ details.books-cell[open] summary {
       data-pick-line="15.88888888888889">
       <div class="card-top">
         <span class="badge high">#14 · 59 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">SDSU @ ORST</h3>
       <div class="matchup-full">San Diego State Aztecs at Oregon State Beavers</div>
@@ -7875,7 +7878,7 @@ details.books-cell[open] summary {
       data-pick-line="10.166666666666666">
       <div class="card-top">
         <span class="badge high">#16 · 57 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">UCF @ OKST</h3>
       <div class="matchup-full">UCF Knights at Oklahoma State Cowboys</div>
@@ -8115,7 +8118,7 @@ details.books-cell[open] summary {
       data-pick-line="6.888888888888889">
       <div class="card-top">
         <span class="badge high">#17 · 56 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">BOIS @ FRES</h3>
       <div class="matchup-full">Boise State Broncos at Fresno State Bulldogs</div>
@@ -8355,7 +8358,7 @@ details.books-cell[open] summary {
       data-pick-line="7.777777777777778">
       <div class="card-top">
         <span class="badge high">#19 · 54 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">IU @ NEB</h3>
       <div class="matchup-full">Indiana Hoosiers at Nebraska Cornhuskers</div>
@@ -8595,7 +8598,7 @@ details.books-cell[open] summary {
       data-pick-line="10.38888888888889">
       <div class="card-top">
         <span class="badge high">#20 · 53 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">UCLA @ ORE</h3>
       <div class="matchup-full">UCLA Bruins at Oregon Ducks</div>
@@ -8835,7 +8838,7 @@ details.books-cell[open] summary {
       data-pick-line="15.5">
       <div class="card-top">
         <span class="badge high">#21 · 52 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">KU @ UTAH</h3>
       <div class="matchup-full">Kansas Jayhawks at Utah Utes</div>
@@ -9075,7 +9078,7 @@ details.books-cell[open] summary {
       data-pick-line="19.055555555555557">
       <div class="card-top">
         <span class="badge high">#24 · 49 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">BUFF @ TOL</h3>
       <div class="matchup-full">Buffalo Bulls at Toledo Rockets</div>
@@ -9315,7 +9318,7 @@ details.books-cell[open] summary {
       data-pick-line="-7.5">
       <div class="card-top">
         <span class="badge mid">#25 · 48 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">JMU @ GASO</h3>
       <div class="matchup-full">James Madison Dukes at Georgia Southern Eagles</div>
@@ -9555,7 +9558,7 @@ details.books-cell[open] summary {
       data-pick-line="-2.4444444444444446">
       <div class="card-top">
         <span class="badge mid">#27 · 46 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">NDSU @ UNLV</h3>
       <div class="matchup-full">North Dakota State Bison at UNLV Rebels</div>
@@ -10020,7 +10023,7 @@ details.books-cell[open] summary {
       data-pick-line="2.9444444444444446">
       <div class="card-top">
         <span class="badge mid">#29 · 44 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">IOWA @ WASH</h3>
       <div class="matchup-full">Iowa Hawkeyes at Washington Huskies</div>
@@ -10260,7 +10263,7 @@ details.books-cell[open] summary {
       data-pick-line="3.6666666666666665">
       <div class="card-top">
         <span class="badge mid">#30 · 43 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">CONN @ TEM</h3>
       <div class="matchup-full">UConn Huskies at Temple Owls</div>
@@ -10500,7 +10503,7 @@ details.books-cell[open] summary {
       data-pick-line="14.5">
       <div class="card-top">
         <span class="badge mid">#31 · 42 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">UAB @ MEM</h3>
       <div class="matchup-full">UAB Blazers at Memphis Tigers</div>
@@ -10740,7 +10743,7 @@ details.books-cell[open] summary {
       data-pick-line="3.2777777777777777">
       <div class="card-top">
         <span class="badge mid">#32 · 41 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">WAKE @ NCSU</h3>
       <div class="matchup-full">Wake Forest Demon Deacons at NC State Wolfpack</div>
@@ -10980,7 +10983,7 @@ details.books-cell[open] summary {
       data-pick-line="-3.5555555555555554">
       <div class="card-top">
         <span class="badge mid">#33 · 40 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">TULN @ ARMY</h3>
       <div class="matchup-full">Tulane Green Wave at Army Black Knights</div>
@@ -11445,7 +11448,7 @@ details.books-cell[open] summary {
       data-pick-line="11.222222222222221">
       <div class="card-top">
         <span class="badge mid">#35 · 38 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">SC @ FLA</h3>
       <div class="matchup-full">South Carolina Gamecocks at Florida Gators</div>
@@ -11685,7 +11688,7 @@ details.books-cell[open] summary {
       data-pick-line="8.61111111111111">
       <div class="card-top">
         <span class="badge mid">#36 · 37 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">LSU @ UK</h3>
       <div class="matchup-full">LSU Tigers at Kentucky Wildcats</div>
@@ -11925,7 +11928,7 @@ details.books-cell[open] summary {
       data-pick-line="9.666666666666666">
       <div class="card-top">
         <span class="badge mid">#37 · 36 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">SYR @ UVA</h3>
       <div class="matchup-full">Syracuse Orange at Virginia Cavaliers</div>
@@ -12165,7 +12168,7 @@ details.books-cell[open] summary {
       data-pick-line="-7.388888888888889">
       <div class="card-top">
         <span class="badge mid">#38 · 35 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">AFA @ NIU</h3>
       <div class="matchup-full">Air Force Falcons at Northern Illinois Huskies</div>
@@ -12405,7 +12408,7 @@ details.books-cell[open] summary {
       data-pick-line="9.833333333333334">
       <div class="card-top">
         <span class="badge mid">#39 · 34 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">VT @ CAL</h3>
       <div class="matchup-full">Virginia Tech Hokies at California Golden Bears</div>
@@ -12645,7 +12648,7 @@ details.books-cell[open] summary {
       data-pick-line="4.222222222222222">
       <div class="card-top">
         <span class="badge mid">#40 · 33 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">CCU @ MRSH</h3>
       <div class="matchup-full">Coastal Carolina Chanticleers at Marshall Thundering Herd</div>
@@ -12885,7 +12888,7 @@ details.books-cell[open] summary {
       data-pick-line="13.5">
       <div class="card-top">
         <span class="badge mid">#42 · 31 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">TENN @ ARK</h3>
       <div class="matchup-full">Tennessee Volunteers at Arkansas Razorbacks</div>
@@ -13125,7 +13128,7 @@ details.books-cell[open] summary {
       data-pick-line="-2.0555555555555554">
       <div class="card-top">
         <span class="badge mid">#43 · 30 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">CMU @ OHIO</h3>
       <div class="matchup-full">Central Michigan Chippewas at Ohio Bobcats</div>
@@ -13365,7 +13368,7 @@ details.books-cell[open] summary {
       data-pick-line="3.9444444444444446">
       <div class="card-top">
         <span class="badge mid">#45 · 28 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">WSU @ USU</h3>
       <div class="matchup-full">Washington State Cougars at Utah State Aggies</div>
@@ -13605,7 +13608,7 @@ details.books-cell[open] summary {
       data-pick-line="-2.5555555555555554">
       <div class="card-top">
         <span class="badge mid">#46 · 27 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">MINN @ PUR</h3>
       <div class="matchup-full">Minnesota Golden Gophers at Purdue Boilermakers</div>
@@ -13845,7 +13848,7 @@ details.books-cell[open] summary {
       data-pick-line="11.166666666666666">
       <div class="card-top">
         <span class="badge mid">#47 · 26 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">ISU @ BYU</h3>
       <div class="matchup-full">Iowa State Cyclones at BYU Cougars</div>
@@ -14310,7 +14313,7 @@ details.books-cell[open] summary {
       data-pick-line="9.444444444444445">
       <div class="card-top">
         <span class="badge low">#49 · 24 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">NEV @ UTEP</h3>
       <div class="matchup-full">Nevada Wolf Pack at UTEP Miners</div>
@@ -14550,7 +14553,7 @@ details.books-cell[open] summary {
       data-pick-line="5.444444444444445">
       <div class="card-top">
         <span class="badge low">#50 · 23 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">EMU @ AKR</h3>
       <div class="matchup-full">Eastern Michigan Eagles at Akron Zips</div>
@@ -14790,7 +14793,7 @@ details.books-cell[open] summary {
       data-pick-line="13.722222222222221">
       <div class="card-top">
         <span class="badge low">#51 · 22 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">KENT @ WMU</h3>
       <div class="matchup-full">Kent State Golden Flashes at Western Michigan Broncos</div>
@@ -15030,7 +15033,7 @@ details.books-cell[open] summary {
       data-pick-line="3.5">
       <div class="card-top">
         <span class="badge low">#57 · 16 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">ARIZ @ WVU</h3>
       <div class="matchup-full">Arizona Wildcats at West Virginia Mountaineers</div>
@@ -15270,7 +15273,7 @@ details.books-cell[open] summary {
       data-pick-line="10.055555555555555">
       <div class="card-top">
         <span class="badge low">#58 · 15 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">RICE @ ECU</h3>
       <div class="matchup-full">Rice Owls at East Carolina Pirates</div>
@@ -15510,7 +15513,7 @@ details.books-cell[open] summary {
       data-pick-line="1.6111111111111112">
       <div class="card-top">
         <span class="badge low">#59 · 14 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">UGA @ ALA</h3>
       <div class="matchup-full">Georgia Bulldogs at Alabama Crimson Tide</div>
@@ -15750,7 +15753,7 @@ details.books-cell[open] summary {
       data-pick-line="-3.5">
       <div class="card-top">
         <span class="badge low">#61 · 12 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">TA&amp;M @ MIZ</h3>
       <div class="matchup-full">Texas A&amp;M Aggies at Missouri Tigers</div>
@@ -15990,7 +15993,7 @@ details.books-cell[open] summary {
       data-pick-line="-6.555555555555555">
       <div class="card-top">
         <span class="badge low">#62 · 11 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">DUKE @ GT</h3>
       <div class="matchup-full">Duke Blue Devils at Georgia Tech Yellow Jackets</div>
@@ -16230,7 +16233,7 @@ details.books-cell[open] summary {
       data-pick-line="0.8">
       <div class="card-top">
         <span class="badge low">#63 · 10 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">FSU @ LOU</h3>
       <div class="matchup-full">Florida State Seminoles at Louisville Cardinals</div>
@@ -16470,7 +16473,7 @@ details.books-cell[open] summary {
       data-pick-line="2.5555555555555554">
       <div class="card-top">
         <span class="badge low">#66 · 7 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">ILL @ MSU</h3>
       <div class="matchup-full">Illinois Fighting Illini at Michigan State Spartans</div>
@@ -16710,7 +16713,7 @@ details.books-cell[open] summary {
       data-pick-line="1.6666666666666667">
       <div class="card-top">
         <span class="badge low">#67 · 6 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">TLSA @ NAVY</h3>
       <div class="matchup-full">Tulsa Golden Hurricane at Navy Midshipmen</div>
@@ -17175,7 +17178,7 @@ details.books-cell[open] summary {
       data-pick-line="-1.5555555555555556">
       <div class="card-top">
         <span class="badge low">#69 · 4 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">USC @ PSU</h3>
       <div class="matchup-full">USC Trojans at Penn State Nittany Lions</div>
@@ -17415,7 +17418,7 @@ details.books-cell[open] summary {
       data-pick-line="7.333333333333333">
       <div class="card-top">
         <span class="badge low">#70 · 3 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">TEX @ OU</h3>
       <div class="matchup-full">Texas Longhorns at Oklahoma Sooners</div>
@@ -17655,7 +17658,7 @@ details.books-cell[open] summary {
       data-pick-line="2.5">
       <div class="card-top">
         <span class="badge low">#72 · 1 pts</span>
-        <span class="badge good">Predicted ATS cover %</span>
+        <span class="badge low">Predicted ATS cover %</span>
       </div>
       <h3 class="matchup">HOU @ KSU</h3>
       <div class="matchup-full">Houston Cougars at Kansas State Wildcats</div>
