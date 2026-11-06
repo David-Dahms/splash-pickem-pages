@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pick History</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #f4f5f7; --surface: #ffffff; --surface-2: #f9fafb; --border: #e2e4e9;
+  --text: #14161a; --text-dim: #5b6270; --accent: #2f6fed; --accent-soft: #e8f0fe;
+  --good: #16794f; --good-bg: #e5f6ee; --bad: #b3261e; --bad-bg: #fbe9e8;
+  --warn: #9a6700; --warn-bg: #fff4dc; --push: #5b6270; --push-bg: #eceef1;
+  --grid: #e2e4e9;
+  --shadow: 0 1px 2px rgba(20,22,26,.06), 0 4px 16px rgba(20,22,26,.06);
+  --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a; --series-4: #eda100; --series-5: #e87ba4; --series-6: #008300; --series-7: #6250d6; --series-8: #e34948;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101215; --surface: #191c20; --surface-2: #1f2226; --border: #2c3036;
+    --text: #eceef1; --text-dim: #9aa1ac; --accent: #6c9bff; --accent-soft: #1c2a4a;
+    --good: #4fd196; --good-bg: #103322; --bad: #ff7a70; --bad-bg: #3a1917;
+    --warn: #e3b341; --warn-bg: #3a2d0d; --push: #9aa1ac; --push-bg: #24272c;
+    --grid: #2c3036;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.3);
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500; --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  padding: 24px 16px 64px; }
+.page { max-width: 1100px; margin: 0 auto; }
+header.top { margin-bottom: 20px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+header.top h1 { margin: 0 0 4px; font-size: 1.6rem; letter-spacing: -0.01em; }
+header.top .sub, .note, .dim { color: var(--text-dim); }
+header.top .sub { font-size: .92rem; }
+a { color: var(--accent); }
+.controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+.controls label { font-size: .85rem; color: var(--text-dim); display: flex; gap: 6px; align-items: center; }
+select { font: inherit; font-size: .9rem; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+.tab-radio { position: absolute; opacity: 0; pointer-events: none; }
+.tab-bar { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+.tab-bar label { cursor: pointer; font-weight: 650; font-size: .88rem; padding: 8px 16px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text-dim); }
+.panel { display: none; }
+#tab-standings:checked ~ .scopes .panel-standings { display: block; }
+#tab-standings:checked ~ .tab-bar label[for="tab-standings"] { background: var(--accent-soft); color: var(--accent); }
+#tab-tendencies:checked ~ .scopes .panel-tendencies { display: block; }
+#tab-tendencies:checked ~ .tab-bar label[for="tab-tendencies"] { background: var(--accent-soft); color: var(--accent); }
+#tab-consensus:checked ~ .scopes .panel-consensus { display: block; }
+#tab-consensus:checked ~ .tab-bar label[for="tab-consensus"] { background: var(--accent-soft); color: var(--accent); }
+#tab-model:checked ~ .scopes .panel-model { display: block; }
+#tab-model:checked ~ .tab-bar label[for="tab-model"] { background: var(--accent-soft); color: var(--accent); }
+#tab-log:checked ~ .scopes .panel-log { display: block; }
+#tab-log:checked ~ .tab-bar label[for="tab-log"] { background: var(--accent-soft); color: var(--accent); }
+.card, .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  box-shadow: var(--shadow); padding: 16px; margin-bottom: 16px; }
+.card h3, .chart-card h3 { margin: 0 0 10px; font-size: 1rem; }
+.table-scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .88rem; }
+th, td { padding: 7px 10px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; vertical-align: top; }
+thead th { font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--text-dim); font-weight: 650; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.grid-table th:not(:first-child) { text-align: right; }
+th.row-head { font-weight: 600; color: var(--text); text-transform: none; letter-spacing: 0; font-size: .88rem; }
+td.strong { font-weight: 700; }
+.sub-val { font-size: .72rem; color: var(--text-dim); }
+.model-row td, .model-row th { background: var(--surface-2); }
+.model-name { font-style: italic; }
+.swatch { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: baseline; }
+.badge { display: inline-block; min-width: 22px; text-align: center; font-size: .75rem; font-weight: 700; padding: 2px 6px; border-radius: 6px; }
+.badge.good { color: var(--good); background: var(--good-bg); }
+.badge.bad { color: var(--bad); background: var(--bad-bg); }
+.badge.push { color: var(--push); background: var(--push-bg); }
+td.good-t { background: var(--good-bg); }
+td.bad-t { background: var(--bad-bg); }
+td.maj { background: var(--accent-soft); }
+.note { font-size: .82rem; margin: 10px 0 0; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.tile { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; box-shadow: var(--shadow); }
+.tile-label { font-size: .78rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: .04em; }
+.tile-value { font-size: 1.6rem; font-weight: 700; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.tile-sub { color: var(--text-dim); font-size: .85rem; }
+details { border-top: 1px solid var(--border); padding: 8px 0; }
+details summary { cursor: pointer; font-weight: 600; font-size: .9rem; }
+details.attention { background: var(--warn-bg); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; margin-bottom: 16px; }
+details.attention summary { color: var(--warn); }
+details.attention ul { margin: 8px 0 0; padding-left: 20px; font-size: .86rem; }
+details.attention li { margin: 4px 0; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .82rem; color: var(--text-dim); margin-bottom: 6px; }
+.legend-item i { display: inline-block; width: 12px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+.chart-wrap { position: relative; }
+.chart-wrap svg { width: 100%; height: auto; display: block; }
+.chart-wrap .grid { stroke: var(--grid); stroke-width: 1; }
+.chart-wrap .axis { fill: var(--text-dim); font-size: 11px; }
+.chart-wrap .series { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart-wrap .crosshair { stroke: var(--text-dim); stroke-width: 1; stroke-dasharray: 3 3; }
+.chart-wrap .hit { fill: transparent; cursor: crosshair; }
+.tooltip { position: absolute; top: 8px; pointer-events: none; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; box-shadow: var(--shadow); padding: 8px 10px; font-size: .8rem; min-width: 140px; }
+.tooltip .tt-head { font-weight: 650; margin-bottom: 4px; }
+.tooltip .tt-row { display: flex; justify-content: space-between; gap: 12px; }
+.tooltip .tt-row i { display: inline-block; width: 10px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+footer.note { margin-top: 24px; }
+@media (max-width: 600px) { body { padding: 16px 16px 48px; } th, td { padding: 6px 8px; } }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header class="top">
+      <div>
+        <h1>Pick History</h1>
+        <div class="sub">Past picks graded against final scores: standings, tendencies, consensus, and how this model would have done on the same games.</div>
+      </div>
+      <div><a href="summary.html">&larr; This week&rsquo;s report</a></div>
+    </header>
+    
+    <div class="card"><p class="note">No graded picks yet. Add rows to a CSV in history/ and re-run.</p></div>
+    <footer class="note">Generated 11/6/2026 11:31 PM from 0 graded picks.
+    Pushes earn 0% of a pick&rsquo;s points (PUSH_POINTS in app/services/history.py).</footer>
+  </div>
+  <script>
+(function () {
+  var scopeSel = document.getElementById("scope-select");
+  var playerSel = document.getElementById("player-select");
+  function applyPlayer() {
+    var p = playerSel.value;
+    document.querySelectorAll(".filterable tbody tr[data-player]").forEach(function (tr) {
+      tr.hidden = !!p && tr.getAttribute("data-player") !== p;
+    });
+  }
+  if (scopeSel) scopeSel.addEventListener("change", function () {
+    document.querySelectorAll(".scope").forEach(function (s) {
+      s.hidden = s.getAttribute("data-scope") !== scopeSel.value;
+    });
+  });
+  if (playerSel) playerSel.addEventListener("change", applyPlayer);
+
+  document.querySelectorAll(".chart-wrap").forEach(function (wrap) {
+    var data = JSON.parse(wrap.getAttribute("data-chart"));
+    var svg = wrap.querySelector("svg");
+    var hit = wrap.querySelector(".hit");
+    var cross = wrap.querySelector(".crosshair");
+    var tip = wrap.querySelector(".tooltip");
+    function fmt(v) { return v == null ? "—" : (Math.round(v * 10) / 10).toString(); }
+    hit.addEventListener("mousemove", function (ev) {
+      var pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
+      var loc = pt.matrixTransform(svg.getScreenCTM().inverse());
+      var best = 0, bd = Infinity;
+      data.x.forEach(function (x, i) { var d = Math.abs(x - loc.x); if (d < bd) { bd = d; best = i; } });
+      cross.setAttribute("x1", data.x[best]); cross.setAttribute("x2", data.x[best]);
+      cross.setAttribute("visibility", "visible");
+      var rows = data.series.map(function (s) { return { s: s, v: s.values[best] }; })
+        .sort(function (a, b) { return (b.v || 0) - (a.v || 0); });
+      tip.innerHTML = '<div class="tt-head">' + data.weeks[best] + "</div>" + rows.map(function (r) {
+        return '<div class="tt-row"><span><i style="background:var(' + r.s.color + ')"></i>' +
+          r.s.name.replace(/[&<>"]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }) +
+          "</span><b>" + fmt(r.v) + "</b></div>";
+      }).join("");
+      tip.hidden = false;
+      var rect = wrap.getBoundingClientRect();
+      var px = (data.x[best] / svg.viewBox.baseVal.width) * rect.width;
+      var left = px + 12;
+      if (left + tip.offsetWidth > rect.width) left = px - tip.offsetWidth - 12;
+      tip.style.left = Math.max(0, left) + "px";
+    });
+    hit.addEventListener("mouseleave", function () {
+      cross.setAttribute("visibility", "hidden"); tip.hidden = true;
+    });
+  });
+})();
+</script>
+</body>
+</html>
