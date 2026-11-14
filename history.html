@@ -328,6 +328,13 @@ table.fit-table th.row-head { min-width: 120px; }
   </table></div>
   <p class="note">If the model is well calibrated, the actual win % in each row should be close to its average predicted %.</p>
 </div>
+
+<div class="card">
+  <h3>Starting-QB adjustment</h3>
+  <p class="note">No graded picks with injury tracking yet. Reports saved from 11/14 on record the starting-QB adjustment; this fills in as those games finish.</p>
+  <p class="note">Since 11/14 the model moves its NFL margin up to 3 points when a team&rsquo;s primary starting QB is out,
+  benched or returning. This compares picks where that adjustment applied with picks where it didn&rsquo;t.</p>
+</div>
 <div class="card">
   <h3>Every pick, by week</h3>
   <p class="note dis-note">Click a week to see each pick. Highlighted rows are the model&rsquo;s top 20 on the Splash slate (the ones scored against the pool).</p>
@@ -391,7 +398,7 @@ table.fit-table th.row-head { min-width: 120px; }
   </table></div>
   <p class="note">Margin = picked team's margin, plus the line for ATS picks (positive = covered).</p>
 </div></div></section></div>
-    <footer class="note">Generated 11/14/2026 3:33 AM from 7043 graded picks.
+    <footer class="note">Generated 11/14/2026 4:28 AM from 7043 graded picks.
     Pushes earn 0% of a pick&rsquo;s points (PUSH_POINTS in app/services/history.py).</footer>
   </div>
   <script>
